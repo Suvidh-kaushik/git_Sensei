@@ -13,7 +13,7 @@ datasource db {
 model User{
     id String @id @default(uuid())
     createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     imageUrl String?
     firstName String?
@@ -22,5 +22,22 @@ model User{
     emailAddr String @unique
 
     credits Int @default(200)
+    
+    projects Project[]
+}
 
+model Project{
+    id String @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name String
+    githubUrl String 
+
+    isDeleted Boolean @default(false)
+    deletedAt DateTime?
+
+    authorId String
+
+    author User @relation(fields: [authorId],references: [id])
 }

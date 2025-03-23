@@ -19,7 +19,6 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="flex justify-center items-center h-full mt-10 mb-10">
     <ClerkProvider>
     <html lang="en" className={`${geist.variable}`}>
       <body>
@@ -27,6 +26,5 @@ export default function RootLayout({
       </body>
     </html>
     </ClerkProvider>
-    </div>
   );
 }

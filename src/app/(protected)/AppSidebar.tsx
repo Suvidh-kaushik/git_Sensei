@@ -6,6 +6,7 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGrou
 import Link from 'next/link'; 
 import { cn } from "~/lib/utils"; 
 import { Button } from "~/components/ui/button";
+import useGetProjects from "~/hooks/use-projects";
 
 const items = [
     {
@@ -25,21 +26,13 @@ const items = [
     }
 ];
 
-const projects = [
-    {
-        name : "Project 1"
-    },
-    {
-        name : "Project 2"
-    },
-    {
-        name : "Project 3"
-    },
-]
 
 export default function AppSidebar() {
 
     const pathname = usePathname();
+    const {projects, setProjectId, projectId} = useGetProjects();
+
+    console.log(projects)
 
     return (
         <Sidebar collapsible="icon" variant="floating">
@@ -73,15 +66,15 @@ export default function AppSidebar() {
                     <SidebarGroupLabel>Your Projects</SidebarGroupLabel>
                     <SidebarGroupContent>
                         {
-                            projects.map(project => {
+                            projects?.map(project => {
                                 return (
                                     <SidebarMenuItem key={project.name}>
                                         <SidebarMenuButton asChild>
-                                            <div>
+                                            <div onClick={() => setProjectId(project.id)}>
                                                 <div className={cn(
                                                     'rounded-sm border size-6 flex items-center justify-center text-sm bg-white text-primary',
                                                     {
-                                                        'bg-primary text-white' : true
+                                                        'bg-primary text-white' : project.id === projectId
                                                     }
                                                 )}>
                                                     {project.name[0]}

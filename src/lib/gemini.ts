@@ -1,8 +1,8 @@
 import {GoogleGenerativeAI} from "@google/generative-ai"
-
+import 'dotenv/config';
 const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 const model=genAI.getGenerativeModel({
-    model:"gemini-1.5-flash"
+    model:"gemini-2.0-flash"
 })
 
 export const summarizeCommit=async(diff:string)=>{
@@ -36,9 +36,7 @@ export const summarizeCommit=async(diff:string)=>{
   Only include file names if there are two or less files that were modified.
   Do not include parts of the example in your summary.
   It is given only as an example of appropriate comments.`,
-        `Please summarise the following diff file: \n\n${diff}`,
+        `Please summarise the following diff file in 150 words: \n\n${diff}`,
       ]);
- return res;
+ return res.response.text();
 }
-
-// console.log(await summarizeCommit()

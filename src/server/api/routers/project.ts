@@ -14,7 +14,6 @@ export const projectRouter=createTRPCRouter({
                 name:input.name,
                 githubUrl:input.githubUrl,
                 authorId:ctx.user.userId!,
-
             }
         })
         await pollCommit(project.id);

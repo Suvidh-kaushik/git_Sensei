@@ -59,5 +59,7 @@ model Commit{
     commitAuthorAvatar String
     commitDate DateTime
 
+    diff String?
+
     summary String
 }

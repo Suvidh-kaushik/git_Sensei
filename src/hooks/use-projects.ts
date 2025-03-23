@@ -8,7 +8,8 @@ export const useGetProjects=()=>{
  return {
     projects,
     projectId,
-    project
+    project,
+    setProjectId
  }
 }
 

@@ -80,6 +80,7 @@ export const pollCommit = async (projectId:string)=>{
   return await summarizeCommit(data) || "sorry please try again laster"
 }
 
+
 async function fetchProjectGithubUrl(projectId:string){
     const project = await db.project.findUnique({
         where:{

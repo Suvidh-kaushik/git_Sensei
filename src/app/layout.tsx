@@ -23,7 +23,11 @@ export default function RootLayout({
     <ClerkProvider>
     <html lang="en" className={`${geist.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <div className="flex justify-center items-center h-screen">
+            {children}
+          </div>
+        </TRPCReactProvider>
         <Toaster/>
       </body>
     </html>

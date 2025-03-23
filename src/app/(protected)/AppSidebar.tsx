@@ -14,16 +14,6 @@ const items = [
         url: "/dashboard",
         icon: LayoutDashboard
     },
-    {
-        title: "Q&A",
-        url: "/qna",
-        icon: Bot
-    },
-    {
-        title: "Billing",
-        url: "/billing",
-        icon: CreditCard
-    }
 ];
 
 

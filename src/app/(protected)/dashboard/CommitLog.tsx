@@ -3,6 +3,8 @@
 import useGetProjects from "~/hooks/use-projects"
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
+import { SheetTrigger, Sheet } from "../../../components/ui/sheet";
+import CommitCard from "./CommitCard";
 
 export default function CommitLog(){
 
@@ -19,22 +21,28 @@ export default function CommitLog(){
                             <div className="flex gap-4 w-full" >
                                 <img src={commit.commitAuthorAvatar} alt="Commit Author" className="size-9 rounded-full"/>
                                 <div  className="w-[100%] h-full bg-white shadow flex p-2 flex-col rounded-md">
-                                    <div>
-                                        <div className="flex justify-between">
-                                            <p className="text-xs">{commit.commitAuthorName}</p>
-                                            <p className="text-xs">{commit.commitDate.toLocaleDateString()}</p>
-                                        </div>
-                                        <p className="text-lg font-medium" >{commit.commitMessage}</p>
-                                    </div>
-                                    <div className="py-1 flex flex-col gap-1">
-                                        {
-                                            commit.summary.split("*").map(s => {
-                                                return (
-                                                    (s.length>0) && <p key={s} className="text-sm text-zinc-600">{"* "} {s}</p> 
-                                                )
-                                            })
-                                        }
-                                    </div>
+                                    <Sheet>
+                                        <SheetTrigger className="">
+                                            <div>
+                                                <div className="flex justify-between">
+                                                    <p className="text-xs">{commit.commitAuthorName}</p>
+                                                    <p className="text-xs">{commit.commitDate.toLocaleDateString()}</p>
+                                                </div>
+                                                    <p className="text-lg font-medium text-left" >{commit.commitMessage}</p>
+                                            </div>
+                                            <div className="py-1 flex flex-col gap-1">
+                                                {
+                                                    commit.summary.split("*").map(s => {
+                                                        return (
+                                                            (s.length>0) && <p key={s} className="text-sm text-zinc-600 text-left">{"* "} {s}</p> 
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+                                        </SheetTrigger>
+                                        <CommitCard commitHash={commit.commitHash}/>
+                                    </Sheet>
+                                    
                                 </div>
                             </div>
                         </li>

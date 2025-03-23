@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 export default function Hero() {
@@ -9,8 +10,10 @@ export default function Hero() {
       <p className="text-lg mb-6">
         AI-powered commit summarizer and question answering tool to analyze GitHub commits effortlessly.
       </p>
-      <Button className="bg-white text-black hover:bg-gray-300">
-        Get Started for Free
+      <Button className="bg-white text-blue-500 hover:bg-gray-100">
+        <Link href="/create">
+        Get Started Now
+        </Link>
       </Button>
     </section>
   );

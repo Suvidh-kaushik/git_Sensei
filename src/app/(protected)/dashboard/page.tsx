@@ -5,7 +5,7 @@ import React from 'react'
 const page =() => {
     const {user}=useUser();
   return (
-    <div>{user?.firstName}</div>
+    <div className=''>{user?.firstName}</div>
   )
 }
 

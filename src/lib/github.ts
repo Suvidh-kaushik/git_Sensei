@@ -70,7 +70,7 @@ export const pollCommit = async (projectId:string)=>{
 }
 
 
-async function summarizeHashes(githubUrl:string,commitHash:string){
+ async function summarizeHashes(githubUrl:string,commitHash:string){
     //repourl/commit/commitHash.diff --- gives the difference and all changes for a commit 
     const {data}=await axios.get(`${githubUrl}/commit/${commitHash}.diff`,{
         headers:{

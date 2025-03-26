@@ -17,25 +17,57 @@ const page = async () => {
      return notFound();
   }
 
-  await db.user.upsert({
-    where:{
-    emailAddr:user.emailAddresses[0]?.emailAddress ?? ""
-    },
-    update:{
-        imageUrl:user.imageUrl,
-        firstName:user.firstName,
-        lastName:user.lastName
-    },
-    create:{
-        id:userId,
-        emailAddr:user.emailAddresses[0]?.emailAddress ??" ",
-        imageUrl:user.imageUrl,
-        firstName:user.firstName,
-        lastName:user.lastName
-    }
+  // await db.user.upsert({
+  //   where:{
+  //   emailAddr:user.emailAddresses[0]?.emailAddress ?? ""
+  //   },
+  //   update:{
+  //       imageUrl:user.imageUrl,
+  //       firstName:user.firstName,
+  //       lastName:user.lastName
+  //   },
+  //   create:{
+  //       id:userId,
+  //       emailAddr:user.emailAddresses[0]?.emailAddress ??" ",
+  //       imageUrl:user.imageUrl,
+  //       firstName:user.firstName,
+  //       lastName:user.lastName
+  //   }
+  // })
+
+  // return redirect('/create')
+
+
+  const userFound=await db.user.findFirst({
+        where:{
+          emailAddr:user.emailAddresses[0]?.emailAddress??""
+        }
   })
 
-  return redirect('/create')
+  if(userFound){
+    return redirect("/create")
+  }
+  else{
+    await db.user.upsert({
+      where:{
+        emailAddr:user.emailAddresses[0]?.emailAddress??" "
+      },
+      update:{
+        imageUrl:user.imageUrl,
+        firstName:user.firstName,
+        lastName:user.lastName
+      },
+      create:{
+              id:userId,
+              emailAddr:user.emailAddresses[0]?.emailAddress ??" ",
+              imageUrl:user.imageUrl,
+              firstName:user.firstName,
+              lastName:user.lastName
+          }
+    })
+  }
+
+  return redirect("/create")
 
 }
 

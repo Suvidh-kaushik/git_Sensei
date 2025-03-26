@@ -9,21 +9,65 @@ export const projectRouter=createTRPCRouter({
         githubUrl:z.string(),
         githubToken:z.string().optional()
     })).mutation(async ({ctx, input})=>{
-        const project =await ctx.db.project.create({
-            data:{
-                name:input.name,
-                githubUrl:input.githubUrl,
-                authorId:ctx.user.userId!,
+        const project=await ctx.db.project.findUnique({
+            where:{
+                githubUrl:input.githubUrl
             }
         })
-        await pollCommit(project.id);
-        return project
+        if(!project){
+            const project =await ctx.db.project.create({
+                data:{
+                    name:input.name,
+                    githubUrl:input.githubUrl,
+                    users:{
+                        connect:{
+                            id:ctx.user.userId!,
+                        }
+                    }
+                }
+            })
+            await pollCommit(project.id);
+        }
+        else{
+            const isProjectRelationPresent=await ctx.db.user.findFirst({
+                where:{
+                    id:ctx.user.userId!,
+                    projects:{
+                        some:{
+                            id:project.id
+                        }
+                    }
+                }
+            })
+            if(isProjectRelationPresent){
+                console.log("already present");
+                return project;
+            }
+            else{
+                await ctx.db.user.update({
+                    where:{
+                        id:ctx.user.userId!,
+                    },
+                    data:{
+                        projects:{
+                            connect:{
+                                id:project.id
+                            }
+                        }
+                    }
+                })
+            }
+        }
+        return project;
     }),
     getProjects:protectedProcedure.query(async({ctx})=>{
         return await ctx.db.project.findMany({
             where:{
-                authorId:ctx.user.userId!,
-                isDeleted:false
+                users:{
+                    some:{
+                      id:ctx.user.userId!
+                    }
+                }
             }
         })
     }),

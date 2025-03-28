@@ -60,6 +60,37 @@ export const projectRouter=createTRPCRouter({
         }
         return project;
     }),
+    deleteProject:protectedProcedure.input(z.object({
+        id:z.string()
+    })).mutation(async({ctx,input})=>{
+            const project=await ctx.db.project.findUnique({
+                where:{
+                    id:input.id
+                }
+            })
+
+            if(!project){
+              console.log(`Project with id : ${input.id} is not found`);
+              throw new Error("Project not found");
+            }
+
+            await ctx.db.$transaction([
+                ctx.db.commit.deleteMany({
+                    where:{
+                        projectId:input.id
+                    }
+                }),
+                ctx.db.project.delete({
+                    where:{
+                        id:input.id
+                    }
+                })
+            ])
+           return{
+            success:"true",
+            message:"project deleted succesfully"
+           }
+    }),
     getProjects:protectedProcedure.query(async({ctx})=>{
         return await ctx.db.project.findMany({
             where:{
